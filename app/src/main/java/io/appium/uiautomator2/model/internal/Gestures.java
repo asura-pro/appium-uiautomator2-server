@@ -16,6 +16,8 @@
 
 package io.appium.uiautomator2.model.internal;
 
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+
 import android.graphics.Point;
 import android.graphics.Rect;
 
@@ -29,8 +31,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.appium.uiautomator2.utils.ReflectionUtils.getField;
-import static io.appium.uiautomator2.utils.ReflectionUtils.invoke;
 import static io.appium.uiautomator2.utils.ReflectionUtils.getMethod;
+import static io.appium.uiautomator2.utils.ReflectionUtils.invoke;
 
 public class Gestures {
     private final Object wrappedInstance;
@@ -72,8 +74,7 @@ public class Gestures {
     }
 
     public static float getDisplayDensity() {
-        return InstrumentationRegistry.getInstrumentation().getContext()
-                .getResources().getDisplayMetrics().density;
+        return getInstrumentation().getTargetContext().getResources().getDisplayMetrics().density;
     }
 
     private static int getSpeedValue(String gestureName) {

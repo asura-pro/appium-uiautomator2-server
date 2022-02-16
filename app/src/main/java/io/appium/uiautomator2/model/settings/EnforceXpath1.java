@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-package io.appium.uiautomator2.handler;
+package io.appium.uiautomator2.model.settings;
 
-import io.appium.uiautomator2.handler.request.SafeRequestHandler;
-import io.appium.uiautomator2.http.AppiumResponse;
-import io.appium.uiautomator2.http.IHttpRequest;
-import io.appium.uiautomator2.model.internal.Gestures;
+public class EnforceXpath1 extends AbstractSetting<Boolean> {
 
-public class GetDevicePixelRatio extends SafeRequestHandler {
+    private static final String SETTING_NAME = "enforceXPath1";
 
-    public GetDevicePixelRatio(String mappedUri) {
-        super(mappedUri);
+    private boolean shouldEnforceXpath1 = false;
+
+    public EnforceXpath1() {
+        super(Boolean.class, SETTING_NAME);
     }
 
     @Override
-    protected AppiumResponse safeHandle(IHttpRequest request) {
-        return new AppiumResponse(getSessionId(request), Gestures.getDisplayDensity());
+    public Boolean getValue() {
+        return shouldEnforceXpath1;
+    }
+
+    @Override
+    protected void apply(Boolean value) {
+        this.shouldEnforceXpath1 = value;
     }
 }

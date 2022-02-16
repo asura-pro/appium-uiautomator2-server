@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
-package io.appium.uiautomator2.common.exceptions;
+package io.appium.uiautomator2.model.settings;
 
-import java.util.Arrays;
+public class LimitXpathContextScope extends AbstractSetting<Boolean> {
 
-public class UnsupportedSettingException extends InvalidArgumentException {
+    private static final String SETTING_NAME = "limitXPathContextScope";
 
-    public UnsupportedSettingException(String settingName, String[] supportedSettingNames) {
-        super(String.format("Setting '%s' is not supported. " +
-                "Only the following settings are supported: %s", settingName,
-                Arrays.toString(supportedSettingNames)));
+    private boolean limitXpathContextScope = true;
+
+    public LimitXpathContextScope() {
+        super(Boolean.class, SETTING_NAME);
     }
 
+    @Override
+    public Boolean getValue() {
+        return limitXpathContextScope;
+    }
+
+    @Override
+    protected void apply(Boolean value) {
+        this.limitXpathContextScope = value;
+    }
 }

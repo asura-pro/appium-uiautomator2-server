@@ -1,6 +1,6 @@
 {
   "name": "appium-uiautomator2-server",
-  "version": "4.21.0",
+  "version": "5.3.1",
   "description": "A netty server with uiautomator2 handlers",
   "main": "index.js",
   "windowsBuildDir": "c:/tmp",
@@ -35,10 +35,12 @@
     "clean-device": "adb uninstall io.appium.uiautomator2.server && adb uninstall io.appium.uiautomator2.server.test"
   },
   "devDependencies": {
-    "android-apidemos": "^3.2.0",
-    "appium-adb": "^8.0.0",
-    "appium-android-driver": "^4.12.0",
-    "appium-gulp-plugins": "^5.0.0",
+    "@appium/gulp-plugins": "^6.0.0",
+    "@appium/support": "^2.53.0",
+    "android-apidemos": "^4.0.0",
+    "appium-adb": "^9.0.0",
+    "appium-android-driver": "^5.0.0",
+    "bluebird": "^3.7.2",
     "gulp": "^4.0.0"
   }
 }

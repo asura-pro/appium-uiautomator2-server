@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import io.appium.uiautomator2.common.exceptions.UiAutomator2Exception;
-import io.appium.uiautomator2.common.exceptions.UnsupportedSettingException;
 import io.appium.uiautomator2.handler.request.BaseRequestHandler;
 import io.appium.uiautomator2.http.AppiumResponse;
 import io.appium.uiautomator2.http.IHttpRequest;
@@ -78,13 +77,11 @@ import static io.appium.uiautomator2.utils.ModelUtils.toJsonString;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
@@ -104,7 +101,7 @@ public class UpdateSettingsTests {
 
     @Before
     public void setUp() throws JSONException {
-        AppiumUIA2Driver.getInstance().initializeSession(Collections.<String, Object>emptyMap());
+        AppiumUIA2Driver.getInstance().initializeSession(Collections.emptyMap());
         HashMap<String, Object> payload = new HashMap<>();
         payload.put(SETTING_NAME, SETTING_VALUE);
 
@@ -184,47 +181,40 @@ public class UpdateSettingsTests {
     @Test
     public void shouldBeAbleToReturnMjpegServerFramerateSetting() {
         verifySettingIsAvailable(
-            MJPEG_SERVER_FRAMERATE,
-            MjpegServerFramerate.class);
+                MJPEG_SERVER_FRAMERATE,
+                MjpegServerFramerate.class);
     }
 
     @Test
     public void shouldBeAbleToReturnMjpegScalingFactorSetting() {
         verifySettingIsAvailable(
-            MJPEG_SCALING_FACTOR,
-            MjpegScalingFactor.class);
+                MJPEG_SCALING_FACTOR,
+                MjpegScalingFactor.class);
     }
 
     @Test
     public void shouldBeAbleToReturnMjpeqServerScreenshotQualitySetting() {
         verifySettingIsAvailable(
-            MJPEG_SERVER_SCREENSHOT_QUALITY,
-            MjpegServerScreenshotQuality.class);
+                MJPEG_SERVER_SCREENSHOT_QUALITY,
+                MjpegServerScreenshotQuality.class);
     }
 
     @Test
     public void shouldBeAbleToReturnMjpegBilinearFilteringSetting() {
         verifySettingIsAvailable(
-            MJPEG_BILINEAR_FILTERING,
-            MjpegBilinearFiltering.class);
+                MJPEG_BILINEAR_FILTERING,
+                MjpegBilinearFiltering.class);
     }
 
-    @Test(expected=UnsupportedSettingException.class)
-    public void shouldThrowExceptionIfSettingIsNotSupported() {
-        updateSettings.getSetting("unsupported_setting");
-    }
-
-    @SuppressWarnings("ConstantConditions")
     @Test
-    public void shouldBeAbleToUpdateSetting() {
+    public void shouldFailBecauseOfNoSessionFound() {
         when(req.body())
                 .thenReturn(toJsonString(new SettingsModel(SETTING_NAME, SETTING_VALUE)));
-        AppiumResponse response = updateSettings.handle(req);
-        verify(mySetting).update(SETTING_VALUE);
-        assertEquals(response.getHttpStatus(), HttpResponseStatus.OK);
+        AppiumResponse resp = updateSettings.handle(req);
+        assertNotEquals(resp.getHttpStatus(), HttpResponseStatus.OK);
+        assertThat(resp.getValue(), is(instanceOf(Throwable.class)));
     }
 
-    @SuppressWarnings("ConstantConditions")
     @Test
     public void shouldReturnResponseWithUnknownErrorStatusIfFailed() {
         doThrow(new UiAutomator2Exception("error")).when(mySetting).update(any());
