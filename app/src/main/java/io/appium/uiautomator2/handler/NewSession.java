@@ -48,6 +48,9 @@ public class NewSession extends SafeRequestHandler implements NoSessionCommandHa
                         "'%s' are mandatory for session creation", CAPABILITIES_KEY));
             }
             Map<String, Object> parsedCaps = W3CCapsUtils.parseCapabilities(w3cCaps.capabilities);
+            if (w3cCaps.capabilities.containsKey("sessionId")) {
+                parsedCaps.put("sessionId", w3cCaps.capabilities.get("sessionId"));
+            }
             String sessionID = AppiumUIA2Driver.getInstance().initializeSession(parsedCaps);
             NotificationListener.getInstance().start();
             Logger.info(String.format("Created the new session with id %s and capabilities %s",

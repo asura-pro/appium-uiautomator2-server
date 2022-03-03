@@ -39,7 +39,12 @@ public class AppiumUIA2Driver {
     }
 
     public String initializeSession(Map<String, Object> capabilities) {
-        this.session = new Session(UUID.randomUUID().toString(), capabilities);
+        Object sessionId = capabilities.get("sessionId");
+        if (sessionId != null) {
+            this.session = new Session(sessionId.toString(), capabilities);
+        } else {
+            this.session = new Session(UUID.randomUUID().toString(), capabilities);
+        }
         return this.session.getSessionId();
     }
 
